@@ -1,0 +1,95 @@
+/* 
+ * 文件名：BuildingController.java  
+ * 版权：Copyright 2016-2017 炎宝网络科技  All Rights Reserved by
+ * 修改人：邱深友  
+ * 创建时间：2017年7月5日
+ * 版本号：v1.0
+*/
+package com.qzi.cms.web.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.qzi.cms.common.annotation.SystemControllerLog;
+import com.qzi.cms.common.enums.RespCodeEnum;
+import com.qzi.cms.common.resp.Paging;
+import com.qzi.cms.common.resp.RespBody;
+import com.qzi.cms.common.util.LogUtils;
+import com.qzi.cms.common.vo.UseBuildingVo;
+import com.qzi.cms.server.service.web.BuildingService;
+
+/**
+ * 楼栋控制器
+ * @author qsy
+ * @version v1.0
+ * @date 2017年7月5日
+ */
+@RestController
+@RequestMapping("/building")
+public class BuildingController {
+	@Resource
+	private BuildingService buildService;
+	
+	@GetMapping("/findTree")
+	public RespBody findTree(){
+		RespBody respBody = new RespBody();
+		try {
+			//查找数据并返回
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "获取用户小区信息成功",buildService.findTree());
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "获取用户小区信息异常");
+			LogUtils.error("获取用户小区信息异常！",ex);
+		}
+		return respBody;
+	}
+	
+	@GetMapping("/findBuilding")
+	public RespBody findBuilding(String communityId,Paging paging){
+		RespBody respBody = new RespBody();
+		try {
+			//查找数据并返回
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "获取楼栋信息成功",buildService.findBuilding(communityId,paging));
+			//保存分页对象
+			paging.setTotalCount(buildService.findCount(communityId));
+			respBody.setPage(paging);
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "获取楼栋信息异常");
+			LogUtils.error("获取楼栋信息异常！",ex);
+		}
+		return respBody;
+	}
+	
+	@PostMapping("/updateState")
+	@SystemControllerLog(description="修改状态")
+	public RespBody updateState(@RequestBody UseBuildingVo buildingVo){
+		RespBody respBody = new RespBody();
+		try {
+			buildService.updateState(buildingVo);
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "修改状态成功");
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "修改状态失败");
+			LogUtils.error("修改状态失败！",ex);
+		}
+		return respBody;
+	}
+	
+	@PostMapping("/createRoom")
+	@SystemControllerLog(description="生成房间")
+	public RespBody createRoom(@RequestBody UseBuildingVo buildingVo){
+		RespBody respBody = new RespBody();
+		try {
+			buildService.createRoom(buildingVo);
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "生成房间成功");
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "生成房间失败");
+			LogUtils.error("生成房间失败！",ex);
+		}
+		return respBody;
+	}
+	
+}
