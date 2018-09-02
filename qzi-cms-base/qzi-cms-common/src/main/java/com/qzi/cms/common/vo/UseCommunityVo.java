@@ -68,7 +68,76 @@ public class UseCommunityVo {
 	 * 状态	
 	 */
 	private String state;
-	
+
+
+
+	/**
+	 * 主机数量
+	 */
+
+	private Integer masterNum;
+	/**
+	 * user数量
+	 */
+
+	private  Integer userNum;
+
+
+	/**
+	 * 物业员id
+	 */
+	private String sysUserId;
+	/**
+	 * 用户名
+	 */
+	private String  userName;
+
+	/**
+	 * 物业状态
+	 * @return
+	 */
+	private String userStatus;
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
+
+	public Integer getMasterNum() {
+		return masterNum;
+	}
+
+	public void setMasterNum(Integer masterNum) {
+		this.masterNum = masterNum;
+	}
+
+	public Integer getUserNum() {
+		return userNum;
+	}
+
+	public void setUserNum(Integer userNum) {
+		this.userNum = userNum;
+	}
+
 	/**
 	 * @return the state
 	 */

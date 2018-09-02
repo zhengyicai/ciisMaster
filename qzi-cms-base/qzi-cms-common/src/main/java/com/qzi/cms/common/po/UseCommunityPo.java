@@ -73,7 +73,48 @@ public class UseCommunityPo {
 	 * 状态	
 	 */
 	private String state;
-	
+
+
+	/**
+	 * 主机数量
+	 */
+
+	private Integer masterNum;
+	/**
+	 * user数量
+	 */
+
+	private  Integer userNum;
+
+	/**
+	 * 物业员id
+	 */
+	private String sysUserId;
+
+	public String getSysUserId() {
+		return sysUserId;
+	}
+
+	public void setSysUserId(String sysUserId) {
+		this.sysUserId = sysUserId;
+	}
+
+	public Integer getMasterNum() {
+		return masterNum;
+	}
+
+	public void setMasterNum(Integer masterNum) {
+		this.masterNum = masterNum;
+	}
+
+	public Integer getUserNum() {
+		return userNum;
+	}
+
+	public void setUserNum(Integer userNum) {
+		this.userNum = userNum;
+	}
+
 	/**
 	 * @return the state
 	 */

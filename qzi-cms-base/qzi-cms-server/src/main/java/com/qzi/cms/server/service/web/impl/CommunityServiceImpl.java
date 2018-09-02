@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -23,10 +24,6 @@ import com.qzi.cms.common.po.UseCommunityUserPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.util.ToolUtils;
 import com.qzi.cms.common.util.YBBeanUtils;
-import com.qzi.cms.common.vo.AdminVo;
-import com.qzi.cms.common.vo.CommunityAdminVo;
-import com.qzi.cms.common.vo.SysCityVo;
-import com.qzi.cms.common.vo.UseCommunityVo;
 import com.qzi.cms.server.mapper.SysCityMapper;
 import com.qzi.cms.server.mapper.SysUserMapper;
 import com.qzi.cms.server.mapper.UseBuildingMapper;
@@ -73,7 +70,7 @@ public class CommunityServiceImpl implements CommunityService {
 		ucPo.setCreateTime(new Date());
 		communityMapper.insert(ucPo);
 		//保存楼栋信息
-		for(int n=1;n<=communityVo.getBuildingNum();n++){
+		/*for(int n=1;n<=communityVo.getBuildingNum();n++){
 			UseBuildingPo buildPo = new UseBuildingPo();
 			buildPo.setId(ToolUtils.getUUID());
 			buildPo.setBuildingName(n+"栋");
@@ -81,7 +78,7 @@ public class CommunityServiceImpl implements CommunityService {
 			buildPo.setCommunityId(ucPo.getId());
 			buildPo.setState(StateEnum.NORMAL.getCode());
 			buildMapper.insert(buildPo);
-		}
+		}*/
 	}
 
 	@Override
@@ -124,6 +121,15 @@ public class CommunityServiceImpl implements CommunityService {
 			ucuPo.setUserId(userId);
 			communityUserMapper.insert(ucuPo);
 		}
+	}
+
+	@Override
+	public void delete(SysUserVo sysUserVo) {
+		userMapper.deleteByPrimaryKey(sysUserVo.getId());
+		communityUserMapper.deleteForRid(sysUserVo.getCommunityArea());
+		UseCommunityPo po =  communityMapper.findOne(sysUserVo.getCommunityArea());
+		po.setSysUserId("");
+		communityMapper.updateByPrimaryKey(po);
 	}
 
 }

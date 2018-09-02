@@ -31,8 +31,14 @@ public interface UseCommunityMapper extends BaseMapper<UseCommunityPo>{
 	 * @param rwoBounds
 	 * @return
 	 */
-	@Select("select * from use_community order by createTime desc")
+	@Select("select c.*,u.userName as userName,u.state as userStatus from use_community c left join sys_user u on u.id = c.sysUserId  order by c.createTime desc")
 	public List<UseCommunityVo> findAll(RowBounds rwoBounds);
+
+	/**
+	 * 查询用户
+	 */
+	@Select("select * from use_community where id = #{id}")
+	public UseCommunityPo findOne(@Param("id") String id);
 
 	/**
 	 * @return

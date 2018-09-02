@@ -10,10 +10,7 @@ package com.qzi.cms.server.service.web;
 import java.util.List;
 
 import com.qzi.cms.common.resp.Paging;
-import com.qzi.cms.common.vo.AdminVo;
-import com.qzi.cms.common.vo.CommunityAdminVo;
-import com.qzi.cms.common.vo.SysCityVo;
-import com.qzi.cms.common.vo.UseCommunityVo;
+import com.qzi.cms.common.vo.*;
 
 /**
  * 住宅小区业务层接口
@@ -67,5 +64,11 @@ public interface CommunityService {
 	 * @param adminVo
 	 */
 	public void add(AdminVo adminVo);
+
+	/**
+	 * 删除物业
+	 * @param sysUserVo
+	 */
+	public void delete(SysUserVo sysUserVo);
 
 }

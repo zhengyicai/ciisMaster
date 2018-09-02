@@ -10,6 +10,7 @@ package com.qzi.cms.web.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.qzi.cms.server.service.web.CommunityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,8 @@ public class UserController {
 	private ConfUtils confUtils;
 	@Resource
 	private RedisService redisService;
+	@Resource
+	private CommunityService communityService;
 	
 	@GetMapping("/findUser")
 	private RespBody findUser(){
@@ -106,6 +109,7 @@ public class UserController {
 			SysUserVo findUser = userService.findByLoginName(userVo.getLoginName());
 			if(findUser == null){
 				userService.add(userVo);
+				
 				respBody.add(RespCodeEnum.SUCCESS.getCode(), "用户信息保存成功");
 			}else{
 				respBody.add(RespCodeEnum.ERROR.getCode(), "登录名已经存在");

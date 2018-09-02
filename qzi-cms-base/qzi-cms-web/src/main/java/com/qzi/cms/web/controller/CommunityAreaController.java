@@ -8,7 +8,14 @@
 package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import com.qzi.cms.common.service.RedisService;
+import com.qzi.cms.common.util.ConfUtils;
+import com.qzi.cms.common.util.CryptUtils;
+import com.qzi.cms.common.vo.SysUserVo;
+import com.qzi.cms.common.vo.UpdatePwVo;
+import com.qzi.cms.server.service.web.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +42,14 @@ import com.qzi.cms.server.service.web.CommunityService;
 public class CommunityAreaController {
 	@Resource
 	private CommunityService communityService;
+	@Resource
+	private UserService userService;//用户业务层
+	@Resource
+	private HttpServletRequest request;
+	@Resource
+	private ConfUtils confUtils;
+	@Resource
+	private RedisService redisService;
 	
 	@GetMapping("/findAll")
 	public RespBody findAll(Paging paging){
@@ -120,5 +135,73 @@ public class CommunityAreaController {
 		}
 		return respBody;
 	}
+
+
+	/**
+	 * 添加小区物业消息
+	 * @param userVo
+	 * @return
+	 */
+	@PostMapping("/addUser")
+	public RespBody add(@RequestBody SysUserVo  userVo){
+		RespBody respBody = new RespBody();
+		try {
+			//判断用户是否存在
+			SysUserVo findUser = userService.findByLoginName(userVo.getLoginName());
+			if(findUser == null){
+				userService.addCommun(userVo);
+
+				respBody.add(RespCodeEnum.SUCCESS.getCode(), "用户信息保存成功");
+			}else{
+				respBody.add(RespCodeEnum.ERROR.getCode(), "登录名已经存在");
+			}
+
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "用户信息保存失败");
+			LogUtils.error("用户信息保存失败！",ex);
+		}
+		return respBody;
+	}
+
+	@PostMapping("/updatePw")
+	public RespBody updatePw(@RequestBody SysUserVo userVo){
+		RespBody respBody = new RespBody();
+		try {
+
+			String token = request.getHeader("token");
+		/*	//读取用户信息
+			SysUserVo userVo = userService.SysUserVo(token);*/
+			// 对输入密码进行加密
+
+
+				//对新密码进行加密
+				String newPw = CryptUtils.hmacSHA1Encrypt(userVo.getPassword(), userVo.getId());
+				//旧密码正确，调用业务层执行密码更新
+				userService.updatePw(newPw,userVo.getId());
+				respBody.add(RespCodeEnum.SUCCESS.getCode(), "修改密码成功");
+
+
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "修改密码失败");
+			LogUtils.error("修改密码失败！",ex);
+		}
+		return respBody;
+	}
+
+
+	@PostMapping("/userDelete")
+	public RespBody delete(@RequestBody SysUserVo userVo){
+		RespBody respBody = new RespBody();
+		try {
+			communityService.delete(userVo);
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "用户信息删除成功");
+		} catch (Exception ex) {
+			respBody.add(RespCodeEnum.ERROR.getCode(), "用户信息删除失败");
+			LogUtils.error("用户信息删除失败！",ex);
+		}
+		return respBody;
+	}
+
+
 	
 }

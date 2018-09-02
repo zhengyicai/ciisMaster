@@ -50,11 +50,24 @@ public interface UserService {
 	public void add(SysUserVo userVo) throws Exception;
 
 	/**
+	 * 新增物业用户
+	 */
+	public void addCommun(SysUserVo userVo) throws  Exception;
+	/**
 	 * 修改用户
 	 * @param userVo
 	 * @throws Exception 
 	 */
 	public void update(SysUserVo userVo) throws Exception;
+
+	/**
+	 * 修改该用户的密码
+	 * @param password
+	 * @param id
+	 * @throws Exception
+	 */
+
+	public void updatePassword(String password,String id) throws  Exception;
 
 	/**
 	 * 删除用户

@@ -12,6 +12,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.UseCommunityPo;
+import com.qzi.cms.common.po.UseCommunityUserPo;
+import com.qzi.cms.common.vo.AdminVo;
+import com.qzi.cms.server.mapper.UseCommunityMapper;
+import com.qzi.cms.server.mapper.UseCommunityUserMapper;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +46,10 @@ public class UserServiceImpl implements UserService {
 	private SysUserMapper userMapper;
 	@Resource
 	private SysRoleMapper roleMapper;
+	@Resource
+	private UseCommunityUserMapper communityUserMapper;
+	@Resource
+	private UseCommunityMapper communityMapper;
 
 	@Override
 	public SysUserVo SysUserVo(String token) throws Exception {
@@ -73,6 +82,50 @@ public class UserServiceImpl implements UserService {
 		userPo.setId(ToolUtils.getUUID());
 		userPo.setCreateTime(new Date());
 		userMapper.insert(userPo);
+
+		
+
+
+	}
+
+
+	/**
+	 * 新增物业绑定小区
+	 * 2018-09-02
+	 * @param userVo
+	 * @throws Exception
+	 */
+
+	@Override
+	public void addCommun(SysUserVo userVo) throws Exception {
+		SysUserPo userPo = YBBeanUtils.copyProperties(userVo, SysUserPo.class);
+				String salt = ToolUtils.getUUID();
+				String loginPw = CryptUtils.hmacSHA1Encrypt(userVo.getPassword(), salt);
+				userPo.setPassword(loginPw);
+				userPo.setSalt(salt);
+				userPo.setId(ToolUtils.getUUID());
+				userPo.setCreateTime(new Date());
+				userMapper.insert(userPo);
+
+
+				/*添加物业管理（物业账号和admin账号）*/
+				UseCommunityUserPo ucuPo = new UseCommunityUserPo();
+				ucuPo.setCommunityId(userVo.getCommunityArea());
+				ucuPo.setUserId(userPo.getId());
+				communityUserMapper.insert(ucuPo);
+
+
+				SysUserVo sysUserVo =  userMapper.findByloginName("admin");
+				UseCommunityUserPo sysPo = new UseCommunityUserPo();
+				sysPo.setCommunityId(userVo.getCommunityArea());
+				sysPo.setUserId(sysUserVo.getId());
+				communityUserMapper.insert(sysPo);
+
+				UseCommunityPo po =  communityMapper.findOne(userVo.getCommunityArea());
+			    po.setSysUserId(userPo.getId());
+			    communityMapper.updateByPrimaryKey(po);
+
+
 	}
 
 	@Override
@@ -84,6 +137,11 @@ public class UserServiceImpl implements UserService {
 		userPo.setRoleName(userVo.getRoleName());
 		userPo.setState(userVo.getState());
 		userMapper.updateByPrimaryKey(userPo);
+	}
+
+	@Override
+	public void updatePassword(String password, String id) throws Exception {
+
 	}
 
 

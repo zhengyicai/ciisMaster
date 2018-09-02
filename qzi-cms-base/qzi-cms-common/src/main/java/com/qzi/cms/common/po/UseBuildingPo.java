@@ -51,7 +51,7 @@ public class UseBuildingPo {
 	 * 状态
 	 */
 	private String state;
-	
+
 	/**
 	 * @return the roomNumber
 	 */

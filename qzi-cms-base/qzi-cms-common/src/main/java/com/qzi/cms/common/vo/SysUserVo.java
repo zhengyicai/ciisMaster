@@ -72,6 +72,20 @@ public class SysUserVo implements Serializable{
 	private String state;
 
 	/**
+	 * 小区账号
+	 */
+	private String communityArea;
+
+
+	public String getCommunityArea() {
+		return communityArea;
+	}
+
+	public void setCommunityArea(String communityArea) {
+		this.communityArea = communityArea;
+	}
+
+	/**
 	 * @return the salt
 	 */
 	public String getSalt() {

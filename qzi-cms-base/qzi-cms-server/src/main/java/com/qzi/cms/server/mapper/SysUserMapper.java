@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 import com.qzi.cms.common.po.SysUserPo;
@@ -63,5 +64,7 @@ public interface SysUserMapper extends BaseMapper<SysUserPo>{
 	 */
 	@Select("SELECT su.userName,su.id userId,uru.userId is not null checked from sys_user su LEFT JOIN use_community_user uru on su.id = uru.userId and uru.communityId=#{cid} where su.state='10'")
 	public List<CommunityAdminVo> findAdmin(@Param("cid")String communityId);
+	@Update("update sys_user set password=#{password}  where id = #{id} ")
+	public void updatePassword(@Param("password")String password,@Param("id") String id);
 
 }
