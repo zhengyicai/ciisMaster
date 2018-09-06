@@ -132,7 +132,22 @@ public class EquipmentServiceImpl implements EquipmentService {
 		//删除设备
 		equipmentMapper.deleteByPrimaryKey(equipmentVo.getId());
 	}
-	
+
+	@Override
+	public void update(UseEquipmentVo equipmentVo) throws Exception {
+				UseEquipmentVo vo = equipmentMapper.findEquipmentInfo(equipmentVo.getEquipmentId());
+		//保存设备信息
+		UseEquipmentPo equipmentPo = YBBeanUtils.copyProperties(vo, UseEquipmentPo.class);
+		equipmentPo.setNowDate(new Date());
+		equipmentPo.setNowState(equipmentVo.getNowState());
+		equipmentMapper.updateByPrimaryKey(equipmentPo);
+	}
+
+	@Override
+	public Integer findCommunityCount(String communityId) {
+		return equipmentMapper.communityIdCount(communityId);
+	}
+
 	/**
 	 * 自动生成设备编号
 	 * @param equipmentVo 设备信息

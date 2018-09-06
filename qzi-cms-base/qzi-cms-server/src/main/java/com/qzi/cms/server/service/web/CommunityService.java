@@ -9,6 +9,7 @@ package com.qzi.cms.server.service.web;
 
 import java.util.List;
 
+import com.qzi.cms.common.po.UseCommunityPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.vo.*;
 
@@ -26,6 +27,11 @@ public interface CommunityService {
 	 * @return
 	 */
 	public List<UseCommunityVo> findAll(Paging paging);
+
+	/**
+	 * 获取当前每个小区的数据
+	 */
+	public UseCommunityPo  findOne(String communityId);
 
 	/**
 	 * 查找总记录数

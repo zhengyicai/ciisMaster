@@ -57,6 +57,11 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
+	public UseCommunityPo findOne(String communityId) {
+		return communityMapper.findOne(communityId);
+	}
+
+	@Override
 	public long findCount() {
 		return communityMapper.findCount();
 	}

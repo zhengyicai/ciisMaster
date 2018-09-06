@@ -73,7 +73,34 @@ public class UseEquipmentPo {
 	 * 状态
 	 */
 	private String state;
-	
+
+	/**
+	 * 当前请求时间
+	 */
+	private Date nowDate;
+
+	/**
+	 * 当前门磁状态
+	 */
+	private Integer nowState;
+
+
+	public Date getNowDate() {
+		return nowDate;
+	}
+
+	public void setNowDate(Date nowDate) {
+		this.nowDate = nowDate;
+	}
+
+	public Integer getNowState() {
+		return nowState;
+	}
+
+	public void setNowState(Integer nowState) {
+		this.nowState = nowState;
+	}
+
 	/**
 	 * @return the loginToken
 	 */

@@ -9,6 +9,9 @@ package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.UseCommunityPo;
+import com.qzi.cms.common.vo.CommunityAdminVo;
+import com.qzi.cms.server.service.web.CommunityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +38,10 @@ import com.qzi.cms.server.service.web.EquipmentService;
 public class EquipmentController {
 	@Resource
 	private EquipmentService equipmentService;
-	
+
+	@Resource
+	private CommunityService communityService;
+
 	@GetMapping("/findCommunitys")
 	public RespBody findCommunitys(){
 		RespBody respBody = new RespBody();
@@ -96,7 +102,16 @@ public class EquipmentController {
 	public RespBody add(@RequestBody UseEquipmentVo equipmentVo){
 		RespBody respBody = new RespBody();
 		try {
-			//不存在
+
+			//判断当前的设备号是否超过小区设定的总数
+			UseCommunityPo communityPo =  communityService.findOne(equipmentVo.getCommunityId());
+			 communityPo.getMasterNum();
+			int count = equipmentService.findCommunityCount(equipmentVo.getCommunityId());
+			 if((count+1)>  communityPo.getMasterNum()){
+				 respBody.add(RespCodeEnum.ERROR.getCode(), "设备已超出该小区设置的主机数");
+				 return respBody;
+			 }
+
 			equipmentService.add(equipmentVo);
 			respBody.add(RespCodeEnum.SUCCESS.getCode(), "设备数据保存成功");
 		} catch (CommException ex) {
@@ -122,5 +137,26 @@ public class EquipmentController {
 		}
 		return respBody;
 	}
-	
+
+
+	/**
+	 * equipmentId and nowState
+	 * @param equipmentVo
+	 * @return
+	 */
+	@PostMapping("/nowStatus")
+	@SystemControllerLog(description="当前设备门磁状态")
+	public RespBody nowStatus(@RequestBody UseEquipmentVo equipmentVo){
+			RespBody respBody = new RespBody();
+			try {
+				equipmentService.update(equipmentVo);
+				respBody.add(RespCodeEnum.SUCCESS.getCode(), "设备门磁状态修改成功");
+			} catch (Exception ex) {
+				respBody.add(RespCodeEnum.ERROR.getCode(), "设备门磁状态修改成功");
+				LogUtils.error("设备删除失败！",ex);
+			}
+			return respBody;
+		}
+
+
 }

@@ -107,4 +107,12 @@ public interface UseEquipmentMapper extends BaseMapper<UseEquipmentPo>{
 			+ "where ucr.communityId = ue.communityId and ue.equipmentType='10' and ucr.residentId=#{rid}")
 	public List<UseEquipmentVo> findMgrMachines(@Param("rid") String residentId);
 
+
+	/**
+	 * 查询小区已绑定的设备号
+	 */
+	@Select("select count(1) from use_equipment where communityId = #{communityId} and state = '10'")
+	public Integer communityIdCount(@Param("communityId") String communityId);
+
+
 }

@@ -72,4 +72,14 @@ public interface EquipmentService {
 	 */
 	public void delete(UseEquipmentVo equipmentVo) throws Exception;
 
+
+	/**
+	 * 修改当前时间和门磁状态
+	 * @param equipmentVo
+	 * @throws Exception
+	 */
+	public void update(UseEquipmentVo equipmentVo) throws  Exception;
+
+	public Integer findCommunityCount(String communityId);
+
 }
