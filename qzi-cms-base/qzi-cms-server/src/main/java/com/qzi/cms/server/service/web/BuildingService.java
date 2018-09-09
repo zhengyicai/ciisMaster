@@ -9,6 +9,7 @@ package com.qzi.cms.server.service.web;
 
 import java.util.List;
 
+import com.qzi.cms.common.po.UseBuildingPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.vo.TreeVo;
 import com.qzi.cms.common.vo.UseBuildingVo;
@@ -55,4 +56,12 @@ public interface BuildingService {
 	 */
 	public void createRoom(UseBuildingVo buildingVo);
 
+
+	/**
+	 * 获取当前小区所有楼栋数
+	 * @param communityId
+	 * @return
+	 */
+
+	public List<UseBuildingPo> findBuilding(String communityId);
 }

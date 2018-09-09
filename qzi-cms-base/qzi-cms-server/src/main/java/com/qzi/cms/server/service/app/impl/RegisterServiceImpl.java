@@ -8,7 +8,7 @@ import com.qzi.cms.server.mapper.UseBuildingMapper;
 import com.qzi.cms.server.mapper.UseCommunityMapper;
 import com.qzi.cms.server.service.app.RegisterService;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.asm.Register;
+/*import sun.jvm.hotspot.asm.Register;*/
 
 import javax.annotation.Resource;
 import java.util.List;

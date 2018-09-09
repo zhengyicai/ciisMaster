@@ -9,6 +9,9 @@ package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.UseBuildingPo;
+import com.qzi.cms.common.po.UseCommunityPo;
+import com.qzi.cms.server.service.web.CommunityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +26,8 @@ import com.qzi.cms.common.util.LogUtils;
 import com.qzi.cms.common.vo.UseBuildingVo;
 import com.qzi.cms.server.service.web.BuildingService;
 
+import java.util.List;
+
 /**
  * 楼栋控制器
  * @author qsy
@@ -34,6 +39,9 @@ import com.qzi.cms.server.service.web.BuildingService;
 public class BuildingController {
 	@Resource
 	private BuildingService buildService;
+
+	@Resource
+	private CommunityService communityService;
 	
 	@GetMapping("/findTree")
 	public RespBody findTree(){
@@ -83,6 +91,25 @@ public class BuildingController {
 	public RespBody createRoom(@RequestBody UseBuildingVo buildingVo){
 		RespBody respBody = new RespBody();
 		try {
+
+			List<UseBuildingPo> list =   buildService.findBuilding(buildingVo.getCommunityId());
+			if(list == null ||"".equals(list)){
+				
+			}else{
+				int count = 0;
+				for(UseBuildingPo po:list){
+					  count+=po.getFloorNumber()*po.getRoomNumber();
+				}
+				count+=buildingVo.getFloorNumber()*buildingVo.getRoomNumber();
+				//判断当前的设备号是否超过小区设定的总数
+				UseCommunityPo communityPo =  communityService.findOne(buildingVo.getCommunityId());
+				if(count>communityPo.getUserNum()){
+					respBody.add(RespCodeEnum.ERROR.getCode(), "住户数已超出该小区设置的住户数");
+					return respBody;
+				}
+
+			}
+
 			buildService.createRoom(buildingVo);
 			respBody.add(RespCodeEnum.SUCCESS.getCode(), "生成房间成功");
 		} catch (Exception ex) {

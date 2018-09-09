@@ -53,6 +53,19 @@ public class UseBuildingPo {
 	private String state;
 
 	/**
+	 * 单元名
+	 */
+	private String unitName;
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+
+	/**
 	 * @return the roomNumber
 	 */
 	public int getRoomNumber() {

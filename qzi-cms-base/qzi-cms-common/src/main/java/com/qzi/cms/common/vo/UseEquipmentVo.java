@@ -95,7 +95,7 @@ public class UseEquipmentVo {
 	/**
 	 * 当前门磁状态
 	 */
-	private Integer nowState;
+	private String nowState;
 
 
 	public Date getNowDate() {
@@ -106,11 +106,11 @@ public class UseEquipmentVo {
 		this.nowDate = nowDate;
 	}
 
-	public Integer getNowState() {
+	public String getNowState() {
 		return nowState;
 	}
 
-	public void setNowState(Integer nowState) {
+	public void setNowState(String nowState) {
 		this.nowState = nowState;
 	}
 

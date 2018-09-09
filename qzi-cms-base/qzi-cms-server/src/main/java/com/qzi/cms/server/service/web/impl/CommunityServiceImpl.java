@@ -74,7 +74,7 @@ public class CommunityServiceImpl implements CommunityService {
 		ucPo.setCommunityNo(getCommunityNo());
 		ucPo.setCreateTime(new Date());
 		communityMapper.insert(ucPo);
-		//保存楼栋信息
+		//保存楼栋信息(废弃)
 		/*for(int n=1;n<=communityVo.getBuildingNum();n++){
 			UseBuildingPo buildPo = new UseBuildingPo();
 			buildPo.setId(ToolUtils.getUUID());

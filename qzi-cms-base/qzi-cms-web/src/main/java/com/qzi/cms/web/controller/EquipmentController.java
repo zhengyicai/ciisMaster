@@ -105,7 +105,7 @@ public class EquipmentController {
 
 			//判断当前的设备号是否超过小区设定的总数
 			UseCommunityPo communityPo =  communityService.findOne(equipmentVo.getCommunityId());
-			 communityPo.getMasterNum();
+			 
 			int count = equipmentService.findCommunityCount(equipmentVo.getCommunityId());
 			 if((count+1)>  communityPo.getMasterNum()){
 				 respBody.add(RespCodeEnum.ERROR.getCode(), "设备已超出该小区设置的主机数");

@@ -82,7 +82,7 @@ public class UseEquipmentPo {
 	/**
 	 * 当前门磁状态
 	 */
-	private Integer nowState;
+	private String nowState;
 
 
 	public Date getNowDate() {
@@ -93,11 +93,11 @@ public class UseEquipmentPo {
 		this.nowDate = nowDate;
 	}
 
-	public Integer getNowState() {
+	public String getNowState() {
 		return nowState;
 	}
 
-	public void setNowState(Integer nowState) {
+	public void setNowState(String nowState) {
 		this.nowState = nowState;
 	}
 

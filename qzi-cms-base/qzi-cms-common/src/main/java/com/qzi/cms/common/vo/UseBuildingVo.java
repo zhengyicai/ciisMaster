@@ -46,7 +46,20 @@ public class UseBuildingVo {
 	 * 状态
 	 */
 	private String state;
-	
+
+	/**
+	 * 单元名称
+	 */
+	private String unitName;
+
+	public String getUnitName() {
+		return unitName;
+	}
+
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+
 	/**
 	 * @return the roomNumber
 	 */

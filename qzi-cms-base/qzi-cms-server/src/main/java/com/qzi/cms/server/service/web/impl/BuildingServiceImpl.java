@@ -76,28 +76,48 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public void createRoom(UseBuildingVo buildingVo) {
 		//修改楼栋参数信息
-		UseBuildingPo buildingPo = buildMapper.selectByPrimaryKey(buildingVo.getId());
-		buildingPo.setUnitNumber(buildingVo.getUnitNumber());
-		buildingPo.setFloorNumber(buildingVo.getFloorNumber());
-		buildingPo.setRoomNumber(buildingVo.getRoomNumber());
-		buildMapper.updateByPrimaryKey(buildingPo);
+//		UseBuildingPo buildingPo = buildMapper.selectByPrimaryKey(buildingVo.getId());
+//		buildingPo.setUnitNumber(buildingVo.getUnitNumber());
+//		buildingPo.setFloorNumber(buildingVo.getFloorNumber());
+//		buildingPo.setRoomNumber(buildingVo.getRoomNumber());
+//		buildMapper.updateByPrimaryKey(buildingPo);
+
+
+		//生成新的楼栋
+		UseBuildingPo buildPo = new UseBuildingPo();
+		buildPo.setId(ToolUtils.getUUID());
+		buildPo.setBuildingName(buildingVo.getBuildingNo()+"栋");
+		buildPo.setBuildingNo(String.format("%02d", buildingVo.getBuildingNo()));
+		buildPo.setCommunityId(buildingVo.getCommunityId());
+		buildPo.setState(StateEnum.NORMAL.getCode());
+		buildPo.setUnitNumber(0);
+		buildPo.setUnitName(buildingVo.getUnitName());
+		buildPo.setFloorNumber(buildingVo.getFloorNumber());
+		buildPo.setRoomNumber(buildingVo.getRoomNumber());
+		buildMapper.insert(buildPo);
+
 		//查找小区
-		UseCommunityPo communityPo = communityMapper.selectByPrimaryKey(buildingPo.getCommunityId());
+		UseCommunityPo communityPo = communityMapper.selectByPrimaryKey(buildPo.getCommunityId());
 		//生成房间
-		for(int u=1;u<=buildingPo.getUnitNumber();u++){
-			for(int f=1;f<=buildingPo.getFloorNumber();f++){
-				for(int r=1;r<=buildingPo.getRoomNumber();r++){
+		for(int u=1;u<=buildingVo.getUnitNumber();u++){
+			for(int f=1;f<=buildPo.getFloorNumber();f++){
+				for(int r=1;r<=buildPo.getRoomNumber();r++){
 					UseRoomPo roomPo = new UseRoomPo();
 					roomPo.setUnitName(String.format("%02d", u));
 					roomPo.setId(ToolUtils.getUUID());
-					roomPo.setBuildingId(buildingPo.getId());
+					roomPo.setBuildingId(buildPo.getId());
 					roomPo.setState(StateEnum.NORMAL.getCode());
-					roomPo.setRoomNo(communityPo.getCommunityNo()+buildingPo.getBuildingNo()+String.format("%02d", u)+String.format("%02d", f)+String.format("%02d", r));
+					roomPo.setRoomNo(communityPo.getCommunityNo()+buildPo.getBuildingNo()+String.format("%02d", u)+String.format("%02d", f)+String.format("%02d", r));
 					roomPo.setRoomName(f+String.format("%02d", r));
 					roomMapper.insert(roomPo);
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<UseBuildingPo> findBuilding(String communityId) {
+		return buildMapper.findByCommunityId(communityId);
 	}
 
 }
