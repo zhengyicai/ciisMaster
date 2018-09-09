@@ -77,4 +77,7 @@ public interface CommunityService {
 	 */
 	public void delete(SysUserVo sysUserVo);
 
+
+
+
 }

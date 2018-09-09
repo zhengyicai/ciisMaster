@@ -48,6 +48,12 @@ public interface UseBuildingMapper extends BaseMapper<UseBuildingPo>{
 	@Select("SELECT * from use_building where communityId=#{communityId} and state='10' ORDER BY buildingNo")
 	public List<UseBuildingPo> findByCommunityId(@Param("communityId") String id);
 
+
+	@Select("select count(1) from use_building where communityId=#{communityId} and state='10'")
+	public long findByCount(@Param("communityId") String communityId);
+
+
+
 	/**
 	 * @param communityId
 	 * @return
