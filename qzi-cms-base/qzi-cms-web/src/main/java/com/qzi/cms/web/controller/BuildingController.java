@@ -103,7 +103,7 @@ public class BuildingController {
 				count+=buildingVo.getFloorNumber()*buildingVo.getRoomNumber();
 				//判断当前的设备号是否超过小区设定的总数
 				UseCommunityPo communityPo =  communityService.findOne(buildingVo.getCommunityId());
-				if(count>communityPo.getUserNum()){
+				if(count> communityPo.getUserNum()){
 					respBody.add(RespCodeEnum.ERROR.getCode(), "住户数已超出该小区设置的住户数");
 					return respBody;
 				}

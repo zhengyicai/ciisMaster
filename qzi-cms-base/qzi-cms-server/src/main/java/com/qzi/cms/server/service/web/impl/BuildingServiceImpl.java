@@ -87,7 +87,7 @@ public class BuildingServiceImpl implements BuildingService {
 		UseBuildingPo buildPo = new UseBuildingPo();
 		buildPo.setId(ToolUtils.getUUID());
 		buildPo.setBuildingName(buildingVo.getBuildingNo()+"栋");
-		buildPo.setBuildingNo(String.format("%02d", buildingVo.getBuildingNo()));
+		buildPo.setBuildingNo(String.format("%02d", Integer.parseInt(buildingVo.getBuildingNo())));
 		buildPo.setCommunityId(buildingVo.getCommunityId());
 		buildPo.setState(StateEnum.NORMAL.getCode());
 		buildPo.setUnitNumber(0);

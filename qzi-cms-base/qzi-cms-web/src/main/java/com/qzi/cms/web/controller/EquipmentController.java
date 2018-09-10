@@ -27,6 +27,9 @@ import com.qzi.cms.common.util.LogUtils;
 import com.qzi.cms.common.vo.UseEquipmentVo;
 import com.qzi.cms.server.service.web.EquipmentService;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 设备管理控制器
  * @author qsy
@@ -86,7 +89,21 @@ public class EquipmentController {
 		RespBody respBody = new RespBody();
 		try {
 			//保存返回数据
-			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找所有设备数据成功", equipmentService.findAll(paging,criteria));
+
+		  List<UseEquipmentVo> list =  equipmentService.findAll(paging,criteria);
+		  for(UseEquipmentVo vo:list){
+			  if(vo.getNowDate()!=null){
+				  if((new Date().getTime()-vo.getNowDate().getTime())/1000>60){
+				  				  vo.setNowDateStatus("离线");
+				  			  }else{
+				  				  vo.setNowDateStatus("在线");
+				   }
+			  }
+
+
+		  }
+
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找所有设备数据成功", list);
 			//保存分页对象
 			paging.setTotalCount(equipmentService.findCount(criteria));
 			respBody.setPage(paging);

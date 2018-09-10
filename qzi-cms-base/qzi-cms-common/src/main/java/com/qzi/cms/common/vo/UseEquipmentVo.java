@@ -96,7 +96,18 @@ public class UseEquipmentVo {
 	 * 当前门磁状态
 	 */
 	private String nowState;
+	/**
+	 * 设备掉线
+	 */
+	private String nowDateStatus;
 
+	public String getNowDateStatus() {
+		return nowDateStatus;
+	}
+
+	public void setNowDateStatus(String nowDateStatus) {
+		this.nowDateStatus = nowDateStatus;
+	}
 
 	public Date getNowDate() {
 		return nowDate;
