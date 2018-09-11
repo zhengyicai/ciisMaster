@@ -7,6 +7,7 @@
 */
 package com.qzi.cms.server.service.app.impl;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -77,7 +78,12 @@ public class LoginServiceImpl implements LoginService {
 	@SuppressWarnings("unchecked")
 	public void register(UseResidentVo residentVo) throws Exception{
 		if(residentMapper.existsMobile(residentVo.getMobile())){
-			throw new CommException("手机号已经被注册");
+			UseResidentPo po =  residentMapper.findMobile(residentVo.getMobile());
+			if((new Date().getTime()-po.getCreateTime().getTime())/1000>(60*60*24*7)){
+
+			}else{
+
+			}
 		}
 		String smsCode = "";
 		//读取redis中的短信验证码

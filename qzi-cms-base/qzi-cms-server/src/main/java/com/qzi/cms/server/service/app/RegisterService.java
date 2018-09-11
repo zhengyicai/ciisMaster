@@ -2,6 +2,7 @@ package com.qzi.cms.server.service.app;
 
 import com.qzi.cms.common.po.UseBuildingPo;
 import com.qzi.cms.common.po.UseCommunityPo;
+import com.qzi.cms.common.po.UseResidentPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.vo.UseBuildingVo;
 
@@ -34,5 +35,9 @@ public interface RegisterService {
      * @return 总数
      */
     public long findCount(String communityId);
+
+    public Boolean existsMobile(String mobile);
+
+    public UseResidentPo findMobile(String mobile);
 
 }

@@ -69,6 +69,7 @@ public class UseResidentVo {
 	 */
 	private String smsCode;
 	
+	
 	/**
 	 * @return the loginToken
 	 */
