@@ -118,6 +118,12 @@ public interface ResidentService {
 	 */
 	public void updateState(UseResidentVo residentVo);
 
+
+	/**
+	 * 修改户主信息
+	 */
+	public void update(UseResidentVo useResidentVo) throws Exception;
+
 	/**
 	 * 是否户主
 	 * @param residentRoomVo 住户

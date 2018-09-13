@@ -5,6 +5,7 @@ import com.qzi.cms.common.po.UseCommunityPo;
 import com.qzi.cms.common.po.UseResidentPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.vo.UseBuildingVo;
+import com.qzi.cms.common.vo.UseRoomVo;
 
 import java.util.List;
 
@@ -39,5 +40,7 @@ public interface RegisterService {
     public Boolean existsMobile(String mobile);
 
     public UseResidentPo findMobile(String mobile);
+
+    public UseRoomVo findRoom(String buildingId,String utilName,String roomName);
 
 }

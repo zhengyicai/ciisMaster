@@ -12,15 +12,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.*;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qzi.cms.common.exception.CommException;
-import com.qzi.cms.common.po.UseBuildingPo;
-import com.qzi.cms.common.po.UseCommunityResidentPo;
-import com.qzi.cms.common.po.UseResidentPo;
-import com.qzi.cms.common.po.UseResidentRoomPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.util.YBBeanUtils;
 import com.qzi.cms.common.util.YzsClientUtils;
@@ -169,6 +166,12 @@ public class ResidentServiceImpl implements ResidentService {
 		crPo.setResidentId(residentVo.getId());
 		crPo.setState(residentVo.getState());
 		communityResidentMapper.updateByPrimaryKey(crPo);
+	}
+
+	@Override
+	public void update(UseResidentVo useResidentVo) throws Exception {
+		UseResidentPo useResidentPo = YBBeanUtils.copyProperties(useResidentVo, UseResidentPo.class);
+		residentMapper.updateByPrimaryKey(useResidentPo);
 	}
 
 	@Override

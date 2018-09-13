@@ -68,8 +68,37 @@ public class UseResidentVo {
 	 * 手机短信验证码
 	 */
 	private String smsCode;
-	
-	
+
+
+	private String  buildingId;
+	private String utilName;
+	private String roomName;
+
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public String getUtilName() {
+		return utilName;
+	}
+
+	public void setUtilName(String utilName) {
+		this.utilName = utilName;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
+	}
+
 	/**
 	 * @return the loginToken
 	 */

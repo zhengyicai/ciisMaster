@@ -18,6 +18,8 @@ import com.qzi.cms.common.util.ToolUtils;
 import com.qzi.cms.common.vo.UseResidentVo;
 import com.qzi.cms.server.service.app.LoginService;
 import com.qzi.cms.server.service.app.RegisterService;
+import com.qzi.cms.server.service.web.ResidentService;
+import com.qzi.cms.server.service.web.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +43,9 @@ public class RegisterController {
 
     @Resource(name="appLogin")
     private LoginService loginService;
+
+    @Resource
+	private ResidentService residentService;
 
 
     @GetMapping("/getCommunity")
@@ -92,12 +97,16 @@ public class RegisterController {
 							respBody.add("1000","管理员正在审核中");
 							return respBody;
 						}else{
-							 //7天以上的， 修改用户信息update
+							 //7天以上的， 修改用户信息注册时间
+							residentVo.setCreateTime(new Date());
+							residentService.update(residentVo);
+							respBody.add("2000","注册成功，等待管理审核");
 						}
 					}
 
 
     				loginService.register(residentVo);
+					
     				respBody.add(RespCodeEnum.SUCCESS.getCode(),"用户注册成功");
     			}
     		} catch (CommException ex) {

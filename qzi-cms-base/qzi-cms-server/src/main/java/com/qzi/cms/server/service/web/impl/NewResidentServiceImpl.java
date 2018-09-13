@@ -12,6 +12,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.UseResidentRoomPo;
+import com.qzi.cms.common.vo.UseRoomVo;
+import com.qzi.cms.server.mapper.UseResidentRoomMapper;
+import com.qzi.cms.server.mapper.UseRoomMapper;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,11 @@ public class NewResidentServiceImpl implements NewResidentService {
 	@Resource
 	private YzsClientUtils clientUtils;
 
+	@Resource
+	private UseRoomMapper useRoomMapper;
+	@Resource
+	private UseResidentRoomMapper useResidentRoomMapper;
+
 	@Override
 	public List<UseResidentVo> findAll(Paging paging, String criteria) {
 		//分页对象
@@ -71,6 +80,18 @@ public class NewResidentServiceImpl implements NewResidentService {
 		residentPo.setPassword(loginPw);
 		residentPo.setCreateTime(new Date());
 		residentMapper.insert(residentPo);
+
+		//查找房间       插入数据
+		 UseRoomVo vo1 =  useRoomMapper.findRoom(residentVo.getBuildingId(),residentVo.getUtilName(),residentVo.getRoomName());
+		UseResidentRoomPo usrRepo = new UseResidentRoomPo();
+		usrRepo.setCommunityId(residentVo.getCommunityId());
+		usrRepo.setOwner("20");
+		usrRepo.setResidentId(residentPo.getId());
+		usrRepo.setRoomId(vo1.getId());
+		useResidentRoomMapper.insert(usrRepo);
+
+
+
 		//注册client账号
 		ClientVo client = new ClientVo();
 		client.setUserId(residentVo.getMobile());
