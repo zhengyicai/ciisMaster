@@ -36,4 +36,11 @@ public interface UseCommunityResidentMapper extends BaseMapper<UseCommunityResid
 	@Select("delete from use_community_resident where residentId=#{rid} and communityId=#{cid}")
 	public void deleteByCriteria(@Param("rid") String residentId,@Param("cid") String communityId);
 
+
+
+	//查询该用户是否被禁用
+	@Select("select count(1)>0 from use_community_resident where residentId=#{rid}  and state = '10'")
+	public boolean existsLoginCR(@Param("rid") String residentId);
+
+
 }

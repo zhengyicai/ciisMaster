@@ -94,13 +94,13 @@ public class RegisterController {
 					if(registerService.existsMobile(residentVo.getMobile())){
 						UseResidentPo po =  registerService.findMobile(residentVo.getMobile());
 						if((new Date().getTime()-po.getCreateTime().getTime())/1000<(60*60*24*7)){
-							respBody.add("1000","管理员正在审核中");
+							respBody.add("1000","申请尚在审核中");
 							return respBody;
 						}else{
 							 //7天以上的， 修改用户信息注册时间
 							residentVo.setCreateTime(new Date());
 							residentService.update(residentVo);
-							respBody.add("2000","注册成功，等待管理审核");
+							respBody.add("2000","注册成功，等待管理员审核");
 						}
 					}
 

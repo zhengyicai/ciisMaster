@@ -12,8 +12,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.UseCommunityResidentPo;
 import com.qzi.cms.common.po.UseResidentRoomPo;
 import com.qzi.cms.common.vo.UseRoomVo;
+import com.qzi.cms.server.mapper.UseCommunityResidentMapper;
 import com.qzi.cms.server.mapper.UseResidentRoomMapper;
 import com.qzi.cms.server.mapper.UseRoomMapper;
 import org.apache.ibatis.session.RowBounds;
@@ -50,6 +52,8 @@ public class NewResidentServiceImpl implements NewResidentService {
 	private UseRoomMapper useRoomMapper;
 	@Resource
 	private UseResidentRoomMapper useResidentRoomMapper;
+	@Resource
+	private UseCommunityResidentMapper communityResidentMapper;
 
 	@Override
 	public List<UseResidentVo> findAll(Paging paging, String criteria) {
@@ -85,11 +89,34 @@ public class NewResidentServiceImpl implements NewResidentService {
 		 UseRoomVo vo1 =  useRoomMapper.findRoom(residentVo.getBuildingId(),residentVo.getUtilName(),residentVo.getRoomName());
 		UseResidentRoomPo usrRepo = new UseResidentRoomPo();
 		usrRepo.setCommunityId(residentVo.getCommunityId());
-		usrRepo.setOwner("20");
+		usrRepo.setOwner("10");
 		usrRepo.setResidentId(residentPo.getId());
 		usrRepo.setRoomId(vo1.getId());
 		useResidentRoomMapper.insert(usrRepo);
 
+
+
+		//一个用户关联一个账号，如该用户和小区已经关联了， 就执行修改   ,未授权
+		UseResidentPo residentPo1 = residentMapper.findMobile(residentVo.getMobile());
+		if(residentPo1 != null){
+			if(communityResidentMapper.existsCR(residentPo1.getId(),residentVo.getCommunityId())){
+				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+				crPo.setResidentId(residentPo.getId());
+				crPo.setCommunityId(residentVo.getCommunityId());
+				crPo.setState("30");
+				communityResidentMapper.updateByPrimaryKey(crPo);
+
+			}else{
+				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+				crPo.setResidentId(residentPo.getId());
+				crPo.setCommunityId(residentVo.getCommunityId());
+				crPo.setState("30");
+				communityResidentMapper.insert(crPo);
+			}
+
+		}else{
+			throw new CommException("手机号未注册,请先注册");
+		}
 
 
 		//注册client账号

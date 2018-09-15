@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.server.mapper.UseCommunityResidentMapper;
 import org.springframework.stereotype.Service;
 
 import com.qzi.cms.common.exception.CommException;
@@ -42,6 +43,8 @@ public class LoginServiceImpl implements LoginService {
 	private ConfUtils confUtils;
 	@Resource
 	private NewResidentService newResidentService;
+	@Resource
+	private UseCommunityResidentMapper useCommunityResidentMapper;
 	
 
 	@Override
@@ -53,6 +56,10 @@ public class LoginServiceImpl implements LoginService {
 			// 不存在
 			throw new CommException("登录用户不存在");
 		} else {
+
+			if(useCommunityResidentMapper.existsLoginCR(resident.getId())){
+				throw new CommException("该账号已被管理员取消，请重新注册！");
+			}
 			// 用户有效，对输入密码进行加密
 			String loginPw = CryptUtils.hmacSHA1Encrypt(loginVo.getPassword(), resident.getSalt());
 			// 验证密码是否正确
@@ -78,12 +85,8 @@ public class LoginServiceImpl implements LoginService {
 	@SuppressWarnings("unchecked")
 	public void register(UseResidentVo residentVo) throws Exception{
 		if(residentMapper.existsMobile(residentVo.getMobile())){
-			UseResidentPo po =  residentMapper.findMobile(residentVo.getMobile());
-			if((new Date().getTime()-po.getCreateTime().getTime())/1000>(60*60*24*7)){
+			//UseResidentPo po =  residentMapper.findMobile(residentVo.getMobile());
 
-			}else{
-
-			}
 		}
 		String smsCode = "";
 		//读取redis中的短信验证码
