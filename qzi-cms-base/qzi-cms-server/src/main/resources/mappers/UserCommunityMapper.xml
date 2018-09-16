@@ -4,16 +4,16 @@
 <mapper namespace="com.qzi.cms.server.mapper.UseCommunityMapper">
     <!-- 注册界面获取小区数据 -->
     <select id="regfindAll" resultType="UseCommunityPo" parameterType="UseCommunityPo">
-        SELECT communityName,communityNo  from  use_community
+        SELECT id,communityName,communityNo  from  use_community
         <where>
             1=1
-            <if test="provinceCode != null and provinceCode !=''">
+            <if test="model.provinceCode != null and model.provinceCode !=''">
                 and provinceCode = #{model.provinceCode}
             </if>
-            <if test="cityCode != null and cityCode !=''">
+            <if test="model.cityCode != null and model.cityCode !=''">
                 and cityCode = #{model.cityCode}
             </if>
-            <if test="areaCode != null and areaCode !=''">
+            <if test="model.areaCode != null and model.areaCode !=''">
                 and areaCode = #{model.areaCode}
             </if>
         </where>
@@ -21,16 +21,16 @@
     </select>
 
     <select id="regfindCount" resultType="Integer" parameterType="UseCommunityPo">
-        SELECT communityName,id  from  use_community
+        SELECT count(1) from  use_community
         <where>
             1=1
-            <if test="provinceCode != null and provinceCode !=''">
+            <if test="model.provinceCode != null and model.provinceCode !=''">
                 and provinceCode = #{model.provinceCode}
             </if>
-            <if test="cityCode != null and cityCode !=''">
+            <if test="model.cityCode != null and model.cityCode !=''">
                 and cityCode = #{model.cityCode}
             </if>
-            <if test="areaCode != null and areaCode !=''">
+            <if test="model.areaCode != null and model.areaCode !=''">
                 and areaCode = #{model.areaCode}
             </if>
         </where>

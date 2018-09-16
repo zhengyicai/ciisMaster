@@ -175,6 +175,11 @@ public class ResidentServiceImpl implements ResidentService {
 	}
 
 	@Override
+	public void updateCreateTime(String residentId) throws Exception {
+		residentMapper.updateCreateTime(residentId);
+	}
+
+	@Override
 	public boolean existsOwner(UseResidentRoomVo residentRoomVo) {
 		return residentRoomMapper.existsOwner(residentRoomVo);
 	}

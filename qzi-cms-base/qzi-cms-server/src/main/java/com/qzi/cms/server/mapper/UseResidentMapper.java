@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 
 import com.qzi.cms.common.po.UseResidentPo;
@@ -119,5 +120,8 @@ public interface UseResidentMapper  extends BaseMapper<UseResidentPo>{
 	 */
 	@Select("select * from use_room where roomNo=#{roomId}")
 	public UseRoomVo findRoomById(@Param("roomId") String roomId);
+
+	@Update("update use_resident set createTime = now() where id= #{residentId}")
+	public void updateCreateTime(@Param("residentId") String residentId);
 
 }

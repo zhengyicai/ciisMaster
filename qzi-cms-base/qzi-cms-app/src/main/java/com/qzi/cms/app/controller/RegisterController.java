@@ -18,6 +18,7 @@ import com.qzi.cms.common.util.ToolUtils;
 import com.qzi.cms.common.vo.UseResidentVo;
 import com.qzi.cms.server.service.app.LoginService;
 import com.qzi.cms.server.service.app.RegisterService;
+import com.qzi.cms.server.service.app.UseCommunityResidentService;
 import com.qzi.cms.server.service.web.ResidentService;
 import com.qzi.cms.server.service.web.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +49,11 @@ public class RegisterController {
 	private ResidentService residentService;
 
 
-    @GetMapping("/getCommunity")
+    @Resource
+	private UseCommunityResidentService useCommunityResidentService;
+
+
+    @PostMapping("/getCommunity")
     @SystemControllerLog(description="获取小区")
     public RespBody getCommunity(@RequestBody UseCommunityPo po) {
         // 创建返回对象
@@ -59,8 +64,8 @@ public class RegisterController {
             respBody.add(RespCodeEnum.SUCCESS.getCode(),"获取小区成功", registerService.regfindAll(po));
 
         }catch (Exception ex) {
-            respBody.add(RespCodeEnum.ERROR.getCode(), "用户登录失败");
-            LogUtils.error("用户登录失败！",ex);
+            respBody.add(RespCodeEnum.ERROR.getCode(), "获取小区失败");
+            LogUtils.error("获取小区失败！",ex);
         }
         return respBody;
     }
@@ -93,21 +98,31 @@ public class RegisterController {
     			if(hasErrors(residentVo,respBody)){
 					if(registerService.existsMobile(residentVo.getMobile())){
 						UseResidentPo po =  registerService.findMobile(residentVo.getMobile());
-						if((new Date().getTime()-po.getCreateTime().getTime())/1000<(60*60*24*7)){
-							respBody.add("1000","申请尚在审核中");
-							return respBody;
+						if(useCommunityResidentService.existsLoginCR(po.getId())){
+							if((new Date().getTime()-po.getCreateTime().getTime())/1000<(60*60*24*7)){
+								respBody.add("1000","申请尚在审核中");
+								return respBody;
+							}else{
+								 //7天以上的， 修改用户信息注册时间
+								residentVo.setCreateTime(new Date());
+								residentService.updateCreateTime(po.getId());
+								respBody.add("2000","注册成功，等待管理员审核");
+								return respBody;
+							}
+
+
 						}else{
-							 //7天以上的， 修改用户信息注册时间
-							residentVo.setCreateTime(new Date());
-							residentService.update(residentVo);
-							respBody.add("2000","注册成功，等待管理员审核");
+							respBody.add("3000","该用户已存在，请不要重复注册");
+							return respBody;
+
 						}
+
 					}
 
 
     				loginService.register(residentVo);
 					
-    				respBody.add(RespCodeEnum.SUCCESS.getCode(),"用户注册成功");
+    				respBody.add(RespCodeEnum.SUCCESS.getCode(),"用户注册成功,等待管理员审核");
     			}
     		} catch (CommException ex) {
     			respBody.add(RespCodeEnum.ERROR.getCode(), ex.getMessage());
@@ -139,10 +154,10 @@ public class RegisterController {
     			respBody.add(RespCodeEnum.ERROR.getCode(), "手机号不能为空");
     			return false;
     		}
-    		if(!ToolUtils.isMobile(residentVo.getMobile())){
+    	/*	if(!ToolUtils.isMobile(residentVo.getMobile())){
     			respBody.add(RespCodeEnum.ERROR.getCode(), "手机号输入有误");
     			return false;
-    		}
+    		}*/
     		if(StringUtils.isEmpty(residentVo.getSmsCode())){
     			respBody.add(RespCodeEnum.ERROR.getCode(), "手机验证码不能为空");
     			return false;

@@ -124,6 +124,11 @@ public interface ResidentService {
 	 */
 	public void update(UseResidentVo useResidentVo) throws Exception;
 
+
+	/**
+	 * 修改注册时间
+	 */
+	public void updateCreateTime(String residentId) throws  Exception;
 	/**
 	 * 是否户主
 	 * @param residentRoomVo 住户
