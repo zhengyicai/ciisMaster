@@ -66,7 +66,20 @@ public class UseResidentPo implements Serializable{
 	 * 创建时间
 	 */
 	private Date createTime;
-	
+	/**
+	 * 备注
+	 */
+
+	private String remark;
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	/**
 	 * @return the loginToken
 	 */
