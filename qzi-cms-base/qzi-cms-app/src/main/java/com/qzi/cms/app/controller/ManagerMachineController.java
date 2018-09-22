@@ -9,6 +9,8 @@ package com.qzi.cms.app.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.vo.UseEquipmentVo;
+import com.qzi.cms.server.service.web.EquipmentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +36,9 @@ import com.qzi.cms.server.service.app.ManagerMachineService;
 public class ManagerMachineController {
 	@Resource
 	private ManagerMachineService mgrMachineService;
-	
+
+	@Resource
+	private EquipmentService equipmentService;
 	/**
 	 * 获取小区门口机
 	 * @param communityNo 小区编号
@@ -117,7 +121,7 @@ public class ManagerMachineController {
 	
 	/**
 	 * 获取手机号对应的房号
-	 * @param equipmentId 设备编号
+	 * @param mobile 设备编号
 	 * @return 响应数据
 	 */
 	@GetMapping("/findRooms")
@@ -170,5 +174,24 @@ public class ManagerMachineController {
 		}
 		return respBody;
 	}
-	
+
+
+	/**
+	 * equipmentId and nowState
+	 * @param equipmentVo
+	 * @return
+	 */
+	@PostMapping("/nowStatus")
+	@SystemControllerLog(description="当前设备门磁状态")
+	public RespBody nowStatus(@RequestBody UseEquipmentVo equipmentVo){
+			RespBody respBody = new RespBody();
+			try {
+				equipmentService.update(equipmentVo);
+				respBody.add(RespCodeEnum.SUCCESS.getCode(), "设备门磁状态修改成功");
+			} catch (Exception ex) {
+				respBody.add(RespCodeEnum.ERROR.getCode(), "设备门磁状态修改成功");
+				LogUtils.error("设备删除失败！",ex);
+			}
+			return respBody;
+		}
 }
