@@ -9,9 +9,12 @@ package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.SysUnitPo;
 import com.qzi.cms.common.po.UseBuildingPo;
 import com.qzi.cms.common.po.UseCommunityPo;
+import com.qzi.cms.common.vo.SysUnitVo;
 import com.qzi.cms.server.service.web.CommunityService;
+import com.qzi.cms.server.service.web.UnitService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +45,10 @@ public class BuildingController {
 
 	@Resource
 	private CommunityService communityService;
+
+
+	@Resource
+	private UnitService unitService;
 	
 	@GetMapping("/findTree")
 	public RespBody findTree(){
@@ -60,8 +67,11 @@ public class BuildingController {
 	public RespBody findBuilding(String communityId,Paging paging){
 		RespBody respBody = new RespBody();
 		try {
+			SysUnitPo po = new SysUnitPo();
+			po.setCommunityId(communityId);
+
 			//查找数据并返回
-			respBody.add(RespCodeEnum.SUCCESS.getCode(), "获取楼栋信息成功",buildService.findBuilding(communityId,paging));
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "获取楼栋信息成功",unitService.findAll(po));
 			//保存分页对象
 			paging.setTotalCount(buildService.findCount(communityId));
 			respBody.setPage(paging);
@@ -92,12 +102,18 @@ public class BuildingController {
 		RespBody respBody = new RespBody();
 		try {
 
-			List<UseBuildingPo> list =   buildService.findBuilding(buildingVo.getCommunityId());
+			//List<UseBuildingPo> list =   buildService.findBuilding(buildingVo.getCommunityId());
+
+			SysUnitPo po1 = new SysUnitPo();
+			po1.setCommunityId(buildingVo.getCommunityId());
+
+			List<SysUnitVo> list = unitService.findAll(po1);
+
 			if(list == null ||"".equals(list)){
 				
 			}else{
 				int count = 0;
-				for(UseBuildingPo po:list){
+				for(SysUnitVo po:list){
 					  count+=po.getFloorNumber()*po.getRoomNumber();
 				}
 				count+=buildingVo.getFloorNumber()*buildingVo.getRoomNumber();
@@ -107,6 +123,20 @@ public class BuildingController {
 					respBody.add(RespCodeEnum.ERROR.getCode(), "住户数已超出该小区设置的住户数");
 					return respBody;
 				}
+
+
+				SysUnitPo po2 = new SysUnitPo();
+				po1.setCommunityId(buildingVo.getCommunityId());
+
+				List<SysUnitVo> list1 = unitService.findAll(po2);
+				for(SysUnitVo vo:list1){
+					if(String.format("%02d",Integer.parseInt(buildingVo.getBuildingNo())).equals(vo.getBuildingNo())  && buildingVo.getCommunityId().equals(vo.getCommunityId()) && String.format("%02d",Integer.parseInt(buildingVo.getUnitName())).equals(vo.getUnitNo()) && "10".equals(vo.getState())){
+						respBody.add(RespCodeEnum.ERROR.getCode(), "同一楼栋不能添加相同单元名称");
+						return respBody;
+					}
+				}
+
+				unitService.findAll(po1);
 
 			}
 

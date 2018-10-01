@@ -46,7 +46,27 @@ public class UseRoomVo {
 	 * 户主
 	 */
 	private String owner;
-	
+
+	private String communityId;
+	private String unitId;
+
+
+	public String getCommunityId() {
+		return communityId;
+	}
+
+	public void setCommunityId(String communityId) {
+		this.communityId = communityId;
+	}
+
+	public String getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(String unitId) {
+		this.unitId = unitId;
+	}
+
 	/**
 	 * @return the owner
 	 */

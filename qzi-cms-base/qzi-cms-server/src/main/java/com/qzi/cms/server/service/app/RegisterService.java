@@ -43,4 +43,6 @@ public interface RegisterService {
 
     public UseRoomVo findRoom(String buildingId,String utilName,String roomName);
 
+    public void updateRegister(UseResidentPo po);
+
 }

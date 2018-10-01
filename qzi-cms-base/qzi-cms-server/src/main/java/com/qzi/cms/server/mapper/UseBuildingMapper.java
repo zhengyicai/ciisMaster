@@ -9,6 +9,8 @@ package com.qzi.cms.server.mapper;
 
 import java.util.List;
 
+import com.qzi.cms.common.po.SysUnitPo;
+import com.qzi.cms.common.po.SysUserPo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
@@ -33,6 +35,11 @@ public interface UseBuildingMapper extends BaseMapper<UseBuildingPo>{
 	 */
 	@Select("select * from use_building where communityId=#{communityId} order by buildingNo")
 	public List<UseBuildingVo> findBuilding(@Param("communityId") String communityId, RowBounds rwoBounds);
+
+	@Select("select * from use_building where communityId=#{useBuildingVo.communityId} and buildingNo=#{useBuildingVo.buildingNo} order by buildingNo limit 1")
+	public UseBuildingVo findCount1(@Param("useBuildingVo") UseBuildingVo useBuildingVo);
+
+
 
 	/**
 	 * @param communityId
@@ -60,5 +67,30 @@ public interface UseBuildingMapper extends BaseMapper<UseBuildingPo>{
 	 */
 	@Select("SELECT id value,buildingName name from use_building where communityId=#{communityId} and roomNumber>0 and state='10' ORDER BY buildingNo")
 	public List<OptionVo> findBuildings(@Param("communityId") String communityId);
+
+
+	/**   zyc
+		 * @param communityId
+		 * @return
+		 */
+	@Select("select DISTINCT buildingName name, id value,communityId from use_building where communityId = #{communityId} order by buildingNo asc")
+	public List<OptionVo> findOneBuildings(@Param("communityId") String communityId);
+
+	/**
+	 * 获取不重复的楼栋名称
+	 * @param communityId
+	 * @return
+	 */
+	@Select("select DISTINCT buildingNo, buildingName,communityId from use_building where communityId = #{communityId} order by buildingNo asc")
+	public  List<UseBuildingPo>  findAllBuildings(@Param("communityId") String communityId);
+
+	/**
+	 * 获取不重复的单元名称
+	 * @param
+	 * @return
+	 */
+		@Select("select * from use_unit where buildingId = #{buildingId}    order by unitName asc")
+		public  List<SysUnitPo>  findAllUnits(@Param("buildingId") String buildingId);
+
 	
 }

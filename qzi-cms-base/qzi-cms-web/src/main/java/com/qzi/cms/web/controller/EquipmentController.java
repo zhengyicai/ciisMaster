@@ -72,11 +72,11 @@ public class EquipmentController {
 	}
 	
 	@GetMapping("/findUnits")
-	public RespBody findUnits(String buildingId){
+	public RespBody findUnits(String unitNo,String buildingId){
 		RespBody respBody = new RespBody();
 		try {
 			//保存返回数据
-			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找单元数据成功", equipmentService.findUnits(buildingId));
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找单元数据成功", equipmentService.findUnits(unitNo,buildingId));
 		} catch (Exception ex) {
 			respBody.add(RespCodeEnum.ERROR.getCode(), "查找单元数据失败");
 			LogUtils.error("查找单元数据失败！",ex);

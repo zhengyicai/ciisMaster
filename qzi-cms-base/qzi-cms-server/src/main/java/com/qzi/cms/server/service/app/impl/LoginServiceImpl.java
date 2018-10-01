@@ -106,6 +106,24 @@ public class LoginServiceImpl implements LoginService {
 		newResidentService.add(residentVo);
 	}
 
+	public void registerUpdate(UseResidentVo residentVo) throws Exception{
+			//if(residentMapper.existsMobile(residentVo.getMobile())){
+				//UseResidentPo po =  residentMapper.findMobile(residentVo.getMobile());
+
+			//}
+			String smsCode = "";
+			//读取redis中的短信验证码
+			Object obj = redisService.getObj(residentVo.getMobile());
+			if(obj != null && obj instanceof Map){
+				Map<String, String> data = (Map<String, String>) obj;
+				smsCode = data.get("smsCode");
+			}
+			if(!smsCode.equals(residentVo.getSmsCode())){
+				throw new CommException("手机验证码输入有误");
+			}
+			newResidentService.update(residentVo);
+		}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public void findPwd(UseResidentVo residentVo) throws Exception{

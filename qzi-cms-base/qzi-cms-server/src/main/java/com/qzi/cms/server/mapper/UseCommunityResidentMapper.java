@@ -29,6 +29,11 @@ public interface UseCommunityResidentMapper extends BaseMapper<UseCommunityResid
 	@Select("select count(1)>0 from use_community_resident where residentId=#{rid} and communityId=#{cid}")
 	public boolean existsCR(@Param("rid") String residentId,@Param("cid") String communityId);
 
+
+
+	@Select("select *  from use_community_resident where residentId=#{rid} limit 1")
+		public UseCommunityResidentPo existsCRResident(@Param("rid") String residentId);
+
 	/**
 	 * @param residentId
 	 * @param communityId

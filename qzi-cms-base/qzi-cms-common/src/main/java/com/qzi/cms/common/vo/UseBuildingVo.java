@@ -7,6 +7,10 @@
 */
 package com.qzi.cms.common.vo;
 
+import com.qzi.cms.common.po.SysUnitPo;
+
+import java.util.List;
+
 /**
  * 楼栋Vo类
  * @author qsy
@@ -51,6 +55,21 @@ public class UseBuildingVo {
 	 * 单元名称
 	 */
 	private String unitName;
+
+
+	/**
+	 * 所属小区主键编号
+	 */
+	private List<SysUnitVo> units;
+
+
+	public List<SysUnitVo> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<SysUnitVo> units) {
+		this.units = units;
+	}
 
 	public String getUnitName() {
 		return unitName;

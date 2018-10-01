@@ -3,7 +3,6 @@ package com.qzi.cms.server.service.app.impl;
 import com.qzi.cms.common.po.UseBuildingPo;
 import com.qzi.cms.common.po.UseCommunityPo;
 import com.qzi.cms.common.po.UseResidentPo;
-import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.vo.UseBuildingVo;
 import com.qzi.cms.common.vo.UseRoomVo;
 import com.qzi.cms.server.mapper.*;
@@ -64,6 +63,12 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public UseRoomVo findRoom(String buildingId, String utilName, String roomName) {
         return useRoomMapper.findRoom(buildingId,utilName,roomName);
+    }
+
+    @Override
+    public void updateRegister(UseResidentPo po) {
+        useResidentMapper.updateByPrimaryKey(po);
+
     }
 
 

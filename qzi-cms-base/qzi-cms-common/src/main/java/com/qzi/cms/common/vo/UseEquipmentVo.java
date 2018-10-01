@@ -53,6 +53,11 @@ public class UseEquipmentVo {
 	 * 单元名称
 	 */
 	private Integer unitName;
+
+	/**
+		 * 单元id
+		 */
+		private String unitId;
 	/**
 	 * 云之讯clientNumber
 	 */
@@ -100,6 +105,15 @@ public class UseEquipmentVo {
 	 * 设备掉线
 	 */
 	private String nowDateStatus;
+
+
+	public String getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(String unitId) {
+		this.unitId = unitId;
+	}
 
 	public String getNowDateStatus() {
 		return nowDateStatus;

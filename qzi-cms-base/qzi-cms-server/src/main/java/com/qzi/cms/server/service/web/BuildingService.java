@@ -54,7 +54,7 @@ public interface BuildingService {
 	 * 生成房间
 	 * @param buildingVo
 	 */
-	public void createRoom(UseBuildingVo buildingVo);
+	public void createRoom(UseBuildingVo buildingVo) throws Exception;
 
 
 	/**

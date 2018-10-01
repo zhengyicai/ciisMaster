@@ -13,15 +13,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.po.*;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qzi.cms.common.enums.EquipmentEnum;
 import com.qzi.cms.common.exception.CommException;
-import com.qzi.cms.common.po.UseBuildingPo;
-import com.qzi.cms.common.po.UseCommunityPo;
-import com.qzi.cms.common.po.UseEquipmentPo;
 import com.qzi.cms.common.resp.Paging;
 import com.qzi.cms.common.util.ToolUtils;
 import com.qzi.cms.common.util.YBBeanUtils;
@@ -65,15 +63,15 @@ public class EquipmentServiceImpl implements EquipmentService {
 
 	@Override
 	public List<OptionVo> findBuildings(String communityId) {
-		return buildMapper.findBuildings(communityId);
+		return buildMapper.findOneBuildings(communityId);
 	}
 
 	@Override
-	public List<OptionVo> findUnits(String buildingId) {
+	public List<OptionVo> findUnits(String unitNo,String buildingId) {
 		List<OptionVo> ropts = new ArrayList<>();
-		UseBuildingPo buildingPo = buildMapper.selectByPrimaryKey(buildingId);
-		for(int u=1;u<=buildingPo.getUnitNumber();u++){
-			ropts.add(new OptionVo(String.format("%02d", u), u+"单元"));
+		List<SysUnitPo> buildingPoList = buildMapper.findAllUnits(buildingId);
+		for(int u=0;u<buildingPoList.size();u++){
+			ropts.add(new OptionVo(buildingPoList.get(u).getUnitNo(), buildingPoList.get(u).getUnitName()));
 		}
 		return ropts;
 	}

@@ -53,7 +53,7 @@ public interface NewResidentService {
 	 * 修改住户信息
 	 * @param residentVo 新住户信息
 	 */
-	public void update(UseResidentVo residentVo);
+	public void update(UseResidentVo residentVo) throws Exception;
 
 	/**
 	 * 删除住户信息

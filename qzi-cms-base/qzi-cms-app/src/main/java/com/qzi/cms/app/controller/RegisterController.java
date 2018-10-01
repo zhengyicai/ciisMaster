@@ -8,23 +8,26 @@ package com.qzi.cms.app.controller;
 import com.qzi.cms.common.annotation.SystemControllerLog;
 import com.qzi.cms.common.enums.RespCodeEnum;
 import com.qzi.cms.common.exception.CommException;
-import com.qzi.cms.common.po.UseBuildingPo;
-import com.qzi.cms.common.po.UseCommunityPo;
-import com.qzi.cms.common.po.UseResidentPo;
+import com.qzi.cms.common.po.*;
 import com.qzi.cms.common.resp.RespBody;
 import com.qzi.cms.common.util.LogUtils;
 
 import com.qzi.cms.common.util.ToolUtils;
+import com.qzi.cms.common.util.YBBeanUtils;
+import com.qzi.cms.common.vo.UseBuildingVo;
 import com.qzi.cms.common.vo.UseResidentVo;
+import com.qzi.cms.server.mapper.UseCommunityResidentMapper;
 import com.qzi.cms.server.service.app.LoginService;
 import com.qzi.cms.server.service.app.RegisterService;
 import com.qzi.cms.server.service.app.UseCommunityResidentService;
 import com.qzi.cms.server.service.web.ResidentService;
+import com.qzi.cms.server.service.web.UnitService;
 import com.qzi.cms.server.service.web.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +53,15 @@ public class RegisterController {
 
 
     @Resource
+	private UnitService unitService;
+
+
+    @Resource
 	private UseCommunityResidentService useCommunityResidentService;
+
+
+	@Resource
+	private UseCommunityResidentMapper communityResidentMapper;
 
 
     @PostMapping("/getCommunity")
@@ -79,7 +90,25 @@ public class RegisterController {
        try {
 
           List<UseBuildingPo> list =   registerService.findBuilding(communityId);
-           respBody.add(RespCodeEnum.SUCCESS.getCode(),"获取楼栋成功",list);
+          List<UseBuildingVo>  listVo =  new ArrayList<UseBuildingVo>();
+          if(list.size()>0){
+
+			  for(UseBuildingPo po:list){
+				  UseBuildingVo useBuildingVo = YBBeanUtils.copyProperties(po, UseBuildingVo.class);
+				  useBuildingVo.setUnitName("");
+				  SysUnitPo unitPo = new SysUnitPo();
+				  unitPo.setBuildingId(useBuildingVo.getId());
+				  useBuildingVo.setUnits(unitService.findAll(unitPo));
+				  if("10".equals(po.getState())){
+					  listVo.add(useBuildingVo);
+				  }
+
+			   }
+
+		  }
+
+
+           respBody.add(RespCodeEnum.SUCCESS.getCode(),"获取楼栋成功",listVo);
 
        }catch (Exception ex) {
            respBody.add(RespCodeEnum.ERROR.getCode(), "用户登录失败");
@@ -112,7 +141,34 @@ public class RegisterController {
 
 
 						}else{
-							respBody.add("3000","该用户已存在，请不要重复注册");
+
+
+
+
+							//communityResidentMapper.existsCR(residentVo.getId(),residentVo.getCommunityId())
+
+							//respBody.add("3000","该用户已存在，请不要重复注册");
+							UseResidentPo po1  =   registerService.findMobile(residentVo.getMobile());
+							po1.setName(residentVo.getName());
+							po1.setPassword(residentVo.getPassword());
+							registerService.updateRegister(po1);
+
+							 UseCommunityResidentPo upo =  communityResidentMapper.existsCRResident(po1.getId());
+							 if(upo!=null){
+								 if("20".equals( upo.getState())){
+									  respBody.add("3000","该用户被禁用，请联系管理员");
+									return   respBody;
+								}
+							 }
+
+
+
+
+							residentVo.setId(po1.getId());
+							loginService.registerUpdate(residentVo);
+							respBody.add("3000","注册成功，等待管理员审核");
+
+
 							return respBody;
 
 						}

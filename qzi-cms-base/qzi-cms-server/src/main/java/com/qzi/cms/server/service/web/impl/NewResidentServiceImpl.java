@@ -83,40 +83,46 @@ public class NewResidentServiceImpl implements NewResidentService {
 		String loginPw = CryptUtils.hmacSHA1Encrypt(residentVo.getPassword(), salt);
 		residentPo.setPassword(loginPw);
 		residentPo.setCreateTime(new Date());
+		
 		residentMapper.insert(residentPo);
 
 		//查找房间       插入数据
-		 UseRoomVo vo1 =  useRoomMapper.findRoom(residentVo.getBuildingId(),residentVo.getUtilName(),residentVo.getRoomName());
-		UseResidentRoomPo usrRepo = new UseResidentRoomPo();
-		usrRepo.setCommunityId(residentVo.getCommunityId());
-		usrRepo.setOwner("10");
-		usrRepo.setResidentId(residentPo.getId());
-		usrRepo.setRoomId(vo1.getId());
-		useResidentRoomMapper.insert(usrRepo);
+		 UseRoomVo vo1 =  useRoomMapper.findRoom(residentVo.getBuildingId(),residentVo.getUnitId(),residentVo.getRoomName());
+
+		 if(vo1!=null){
+			 		UseResidentRoomPo usrRepo = new UseResidentRoomPo();
+					usrRepo.setCommunityId(residentVo.getCommunityId());
+					usrRepo.setOwner("10");
+					usrRepo.setResidentId(residentPo.getId());
+					usrRepo.setRoomId(vo1.getId());
+					useResidentRoomMapper.insert(usrRepo);
+			 //一个用户关联一个账号，如该用户和小区已经关联了， 就执行修改   ,未授权
+			 		UseResidentPo residentPo1 = residentMapper.findMobile(residentVo.getMobile());
+			 		if(residentPo1 != null){
+			 			if(communityResidentMapper.existsCR(residentPo1.getId(),residentVo.getCommunityId())){
+			 				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+			 				crPo.setResidentId(residentPo.getId());
+			 				crPo.setCommunityId(residentVo.getCommunityId());
+			 				crPo.setState("30");
+			 				communityResidentMapper.updateByPrimaryKey(crPo);
+
+			 			}else{
+			 				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+			 				crPo.setResidentId(residentPo.getId());
+			 				crPo.setCommunityId(residentVo.getCommunityId());
+			 				crPo.setState("30");
+			 				communityResidentMapper.insert(crPo);
+			 			}
+
+			 		}else{
+			 			throw new CommException("手机号未注册,请先注册");
+			 		}
+
+		 }
 
 
 
-		//一个用户关联一个账号，如该用户和小区已经关联了， 就执行修改   ,未授权
-		UseResidentPo residentPo1 = residentMapper.findMobile(residentVo.getMobile());
-		if(residentPo1 != null){
-			if(communityResidentMapper.existsCR(residentPo1.getId(),residentVo.getCommunityId())){
-				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
-				crPo.setResidentId(residentPo.getId());
-				crPo.setCommunityId(residentVo.getCommunityId());
-				crPo.setState("30");
-				communityResidentMapper.updateByPrimaryKey(crPo);
 
-			}else{
-				UseCommunityResidentPo crPo = new UseCommunityResidentPo();
-				crPo.setResidentId(residentPo.getId());
-				crPo.setCommunityId(residentVo.getCommunityId());
-				crPo.setState("30");
-				communityResidentMapper.insert(crPo);
-			}
-
-		}else{
-			throw new CommException("手机号未注册,请先注册");
-		}
 
 
 		//注册client账号
@@ -135,10 +141,38 @@ public class NewResidentServiceImpl implements NewResidentService {
 	}
 
 	@Override
-	public void update(UseResidentVo residentVo) {
-		UseResidentPo residentPo = residentMapper.selectByPrimaryKey(residentVo.getId());
-		residentPo.setName(residentVo.getName());
-		residentMapper.updateByPrimaryKey(residentPo);
+	public void update(UseResidentVo residentVo) throws Exception {
+		UseResidentPo residentPo = YBBeanUtils.copyProperties(residentVo, UseResidentPo.class);
+		//查找房间       插入数据
+				 UseRoomVo vo1 =  useRoomMapper.findRoom(residentVo.getBuildingId(),residentVo.getUnitId(),residentVo.getRoomName());
+
+				 if(vo1!=null){
+					 		UseResidentRoomPo usrRepo = new UseResidentRoomPo();
+							usrRepo.setCommunityId(residentVo.getCommunityId());
+							usrRepo.setOwner("10");
+							usrRepo.setResidentId(residentPo.getId());
+							usrRepo.setRoomId(vo1.getId());
+							useResidentRoomMapper.insert(usrRepo);
+					 //一个用户关联一个账号，如该用户和小区已经关联了， 就执行修改   ,未授权
+
+							if(communityResidentMapper.existsCR(residentVo.getId(),residentVo.getCommunityId())){
+								UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+								crPo.setResidentId(residentPo.getId());
+								crPo.setCommunityId(residentVo.getCommunityId());
+								crPo.setState("30");
+								communityResidentMapper.updateByPrimaryKey(crPo);
+
+							}else{
+								UseCommunityResidentPo crPo = new UseCommunityResidentPo();
+								crPo.setResidentId(residentPo.getId());
+								crPo.setCommunityId(residentVo.getCommunityId());
+								crPo.setState("30");
+								communityResidentMapper.insert(crPo);
+							}
+
+
+
+				 }
 	}
 
 	@Override

@@ -76,7 +76,15 @@ public class UseResidentVo {
 
 
 	private String remark;
+	private String unitId;
 
+	public String getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(String unitId) {
+		this.unitId = unitId;
+	}
 
 	public String getRemark() {
 		return remark;

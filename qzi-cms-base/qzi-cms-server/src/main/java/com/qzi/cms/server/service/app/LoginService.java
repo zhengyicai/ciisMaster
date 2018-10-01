@@ -34,6 +34,7 @@ public interface LoginService {
 	 * @throws Exception 
 	 */
 	public void register(UseResidentVo residentVo) throws Exception;
+	public void registerUpdate(UseResidentVo residentVo) throws Exception;
 
 	/**
 	 * 通过手机号找回密码

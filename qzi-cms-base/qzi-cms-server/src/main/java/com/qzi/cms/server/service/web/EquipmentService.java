@@ -40,7 +40,7 @@ public interface EquipmentService {
 	 * @param buildingId 楼栋编号
 	 * @return 单元集合
 	 */
-	public List<OptionVo> findUnits(String buildingId);
+	public List<OptionVo> findUnits(String unitNo,String buildingId);
 
 	/**
 	 * 返回当前用户对应小区的设备集合
