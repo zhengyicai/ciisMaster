@@ -20,6 +20,7 @@ import com.qzi.cms.server.mapper.UseCommunityResidentMapper;
 import com.qzi.cms.server.service.app.LoginService;
 import com.qzi.cms.server.service.app.RegisterService;
 import com.qzi.cms.server.service.app.UseCommunityResidentService;
+import com.qzi.cms.server.service.web.NewResidentService;
 import com.qzi.cms.server.service.web.ResidentService;
 import com.qzi.cms.server.service.web.UnitService;
 import com.qzi.cms.server.service.web.UserService;
@@ -59,6 +60,9 @@ public class RegisterController {
     @Resource
 	private UseCommunityResidentService useCommunityResidentService;
 
+
+    @Resource
+	private NewResidentService newResidentService;
 
 	@Resource
 	private UseCommunityResidentMapper communityResidentMapper;
@@ -117,6 +121,22 @@ public class RegisterController {
        return respBody;
     }
 
+
+
+    @GetMapping("/delMobile")
+	@SystemControllerLog(description="删除云之讯")
+	public RespBody delMobile(String mobile) {
+		RespBody respBody = new RespBody();
+		try {
+			newResidentService.delMobile(mobile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			respBody.add("9999","删除失败");
+			return respBody;
+		}
+		respBody.add("0000","删除成功");
+		return respBody;
+	}
     @PostMapping("/register")
     	@SystemControllerLog(description="用户登录")
     	public RespBody register(@RequestBody UseResidentVo residentVo) {

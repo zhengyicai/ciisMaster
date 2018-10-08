@@ -186,4 +186,13 @@ public class NewResidentServiceImpl implements NewResidentService {
 		residentMapper.deleteByPrimaryKey(residentVo.getId());
 	}
 
+	@Override
+	public void delMobile(String mobile) throws Exception {
+		//注销云之讯账户
+			ClientVo client = new ClientVo();
+			client.setUserId(mobile);
+			clientUtils.deleteClient(client);
+
+	}
+
 }

@@ -62,4 +62,9 @@ public interface NewResidentService {
 	 */
 	public void delete(UseResidentVo residentVo) throws Exception;
 
+	/**
+	 * 删除云之讯的手机号
+	 */
+	public void  delMobile(String mobile) throws Exception;
+	 
 }
