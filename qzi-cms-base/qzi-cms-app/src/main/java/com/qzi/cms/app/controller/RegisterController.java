@@ -10,6 +10,7 @@ import com.qzi.cms.common.enums.RespCodeEnum;
 import com.qzi.cms.common.exception.CommException;
 import com.qzi.cms.common.po.*;
 import com.qzi.cms.common.resp.RespBody;
+import com.qzi.cms.common.util.CryptUtils;
 import com.qzi.cms.common.util.LogUtils;
 
 import com.qzi.cms.common.util.ToolUtils;
@@ -170,7 +171,10 @@ public class RegisterController {
 							//respBody.add("3000","该用户已存在，请不要重复注册");
 							UseResidentPo po1  =   registerService.findMobile(residentVo.getMobile());
 							po1.setName(residentVo.getName());
-							po1.setPassword(residentVo.getPassword());
+							String salt = ToolUtils.getUUID();
+							po1.setSalt(salt);
+							String loginPw = CryptUtils.hmacSHA1Encrypt(residentVo.getPassword(), salt);
+							po1.setPassword(loginPw);
 							registerService.updateRegister(po1);
 
 							 UseCommunityResidentPo upo =  communityResidentMapper.existsCRResident(po1.getId());
