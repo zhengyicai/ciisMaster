@@ -68,7 +68,7 @@ public interface UseEquipmentMapper extends BaseMapper<UseEquipmentPo>{
 			+"where ucr.communityId = eu.communityId and (eu.equipmentType='10' OR eu.equipmentType='20') " 
 			+"and eu.state = '10' and ucr.residentId=#{rid} "
 			+"UNION "
-			+"SELECT ue.* from use_equipment ue INNER JOIN (SELECT ur.*,urr.communityId,urr.residentId from use_room ur,use_resident_room urr where ur.id = urr.roomId) ur "
+			+"SELECT ue.* from use_equipment ue INNER JOIN (SELECT ur.*,urr.residentId from use_room ur,use_resident_room urr where ur.id = urr.roomId) ur "
 			+"on ue.communityId = ur.communityId and ue.buildingId = ur.buildingId and ue.unitName = ur.unitName and ur.residentId=#{rid} "
 			+") equ LEFT JOIN use_common_equipment uce on uce.equipmentId=equ.id and uce.residentId=#{rid}) tmp "
 			+ "where tmp.communityId = uc.id")

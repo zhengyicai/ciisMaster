@@ -9,6 +9,7 @@ package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.server.mapper.UseBuildingMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,9 @@ import com.qzi.cms.server.service.web.ResidentService;
 public class ResidentController {
 	@Resource
 	private ResidentService residentService;
+
+	@Resource
+	private UseBuildingMapper useBuildingMapper;
 	
 	@GetMapping("/findCommunitys")
 	public RespBody findCommunitys(){
@@ -129,7 +133,7 @@ public class ResidentController {
 		RespBody respBody = new RespBody();
 		try {
 			//保存返回数据
-			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找单元数据成功", residentService.findUnits(buildingId));
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找单元数据成功", useBuildingMapper.findAllUnits(buildingId));
 		} catch (Exception ex) {
 			respBody.add(RespCodeEnum.ERROR.getCode(), "查找单元数据失败");
 			LogUtils.error("查找单元数据失败！",ex);

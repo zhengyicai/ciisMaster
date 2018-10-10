@@ -57,7 +57,7 @@
 				and rm.buildingId = #{vo.buildingId}
 			</if>
 			<if test="vo.unitId != null and vo.unitId !=''">
-				and rm.unitName = #{vo.unitId}
+				and rm.unitId = #{vo.unitId}
 			</if>
 			<if test="vo.roomId != null and vo.roomId !=''">
 				and rm.id = #{vo.roomId}
