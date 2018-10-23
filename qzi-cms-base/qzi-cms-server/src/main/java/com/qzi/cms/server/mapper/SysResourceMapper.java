@@ -27,11 +27,16 @@ public interface SysResourceMapper extends BaseMapper<SysResourcePo>{
 	@Select("SELECT sr.* from sys_resource sr INNER JOIN sys_role_permission srp on sr.id = srp.resourceId and sr.state = '10' and srp.roleId=#{roleId} order by sr.resSort")
 	public List<SysResourceVo> findMenus(@Param("roleId") String roleId);
 
+	@Select("SELECT sr.* from sys_resource sr INNER JOIN sys_role_permission srp on sr.id = srp.resourceId and sr.state = '10' and sr.parentId = #{parentId} and srp.roleId=#{roleId} order by sr.resSort")
+	public List<SysResourceVo> findVueMenus(@Param("roleId") String roleId,@Param("parentId") String parentId);
+
+
 	/**
 	 * @param roleId 
 	 * @return
 	 */
 	@Select("SELECT res.*,srp.resourceId is not NULL selected FROM sys_resource res LEFT JOIN sys_role_permission srp on srp.resourceId=res.id and srp.roleId=#{roleId} and res.state='10' order by res.resSort")
 	public List<SysResourceVo> findRoleMenus(@Param("roleId") String roleId);
+
 
 }

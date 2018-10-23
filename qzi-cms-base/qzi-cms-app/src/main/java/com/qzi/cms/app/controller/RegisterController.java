@@ -138,6 +138,27 @@ public class RegisterController {
 		respBody.add("0000","删除成功");
 		return respBody;
 	}
+
+
+	@GetMapping("/delMobileStr")
+	@SystemControllerLog(description="删除云之讯")
+	public RespBody delMobileStr(String mobile) {
+		RespBody respBody = new RespBody();
+		try {
+			String str[] = mobile.split(",");
+			for(int i = 0 ;i<str.length;i++){
+				System.out.print(str[i]);
+				newResidentService.delMobile(str[i]);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			respBody.add("9999","删除失败");
+			return respBody;
+		}
+		respBody.add("0000","删除成功");
+		return respBody;
+	}
     @PostMapping("/register")
     	@SystemControllerLog(description="用户登录")
     	public RespBody register(@RequestBody UseResidentVo residentVo) {

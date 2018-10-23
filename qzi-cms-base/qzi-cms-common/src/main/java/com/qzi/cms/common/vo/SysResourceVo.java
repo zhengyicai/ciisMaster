@@ -7,6 +7,8 @@
 */
 package com.qzi.cms.common.vo;
 
+import java.util.List;
+
 /**
  * 资源FormVo
  * @author qsy
@@ -63,7 +65,22 @@ public class SysResourceVo {
 	 * 是否选中
 	 */
 	private boolean selected = true;
-	
+
+	/**
+	 * 获取子类集合
+	 */
+
+	private List<SysResourceVo> children;
+
+
+	public List<SysResourceVo> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<SysResourceVo> children) {
+		this.children = children;
+	}
+
 	/**
 	 * @return the selected
 	 */

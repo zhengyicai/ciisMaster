@@ -9,6 +9,7 @@ package com.qzi.cms.web.controller;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.vo.SysResourceVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,8 @@ import com.qzi.cms.common.resp.RespBody;
 import com.qzi.cms.common.util.LogUtils;
 import com.qzi.cms.common.vo.SysRolePermissionVo;
 import com.qzi.cms.server.service.web.RoleService;
+
+import java.util.List;
 
 /**
  * 权限管理控制器
@@ -50,6 +53,8 @@ public class RoleController {
 		}
 		return respBody;
 	}
+
+
 	
 	/**
 	 * 保存角色权限关系
