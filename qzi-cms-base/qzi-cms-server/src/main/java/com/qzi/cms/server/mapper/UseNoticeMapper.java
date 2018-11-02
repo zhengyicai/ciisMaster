@@ -74,4 +74,6 @@ public interface UseNoticeMapper extends BaseMapper<UseNoticePo>{
 	@Select({"SELECT un.* from use_notice un,use_community uc where un.communityId = uc.id and NOW()<un.endTime and un.state = '10' and uc.communityNo = #{cno} ORDER BY un.createTime desc"})
 	public abstract List<UseNoticeVo> findNoticeByCno(@Param("cno") String paramString);
 
+
+
 }
