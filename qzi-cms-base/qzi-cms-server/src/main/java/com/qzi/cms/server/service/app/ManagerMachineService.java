@@ -9,10 +9,7 @@ package com.qzi.cms.server.service.app;
 
 import java.util.List;
 
-import com.qzi.cms.common.vo.CallVo;
-import com.qzi.cms.common.vo.UseAlarmRecordVo;
-import com.qzi.cms.common.vo.UseEquipmentVo;
-import com.qzi.cms.common.vo.UseRoomVo;
+import com.qzi.cms.common.vo.*;
 
 /**
  * 管理机业务层接口
@@ -75,4 +72,6 @@ public interface ManagerMachineService {
 	 */
 	public UseRoomVo findRoomById(String roomId);
 
+
+	public abstract List<UseNoticeVo> findTopNotice(String paramString);
 }

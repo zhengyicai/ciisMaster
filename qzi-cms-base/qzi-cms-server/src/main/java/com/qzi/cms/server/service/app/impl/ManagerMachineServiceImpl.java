@@ -12,16 +12,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.qzi.cms.common.vo.*;
+import com.qzi.cms.server.mapper.UseNoticeMapper;
 import org.springframework.stereotype.Service;
 
 import com.qzi.cms.common.enums.YNEnum;
 import com.qzi.cms.common.po.UseAlarmRecordPo;
 import com.qzi.cms.common.util.ToolUtils;
 import com.qzi.cms.common.util.YBBeanUtils;
-import com.qzi.cms.common.vo.CallVo;
-import com.qzi.cms.common.vo.UseAlarmRecordVo;
-import com.qzi.cms.common.vo.UseEquipmentVo;
-import com.qzi.cms.common.vo.UseRoomVo;
 import com.qzi.cms.server.mapper.UseAlarmRecordMapper;
 import com.qzi.cms.server.mapper.UseEquipmentMapper;
 import com.qzi.cms.server.mapper.UseResidentMapper;
@@ -41,6 +39,8 @@ public class ManagerMachineServiceImpl implements ManagerMachineService {
 	private UseAlarmRecordMapper alarmRecordMapper;
 	@Resource
 	private UseResidentMapper residentMapper;
+	@Resource
+	private UseNoticeMapper noticeMapper;
 
 	@Override
 	public List<UseEquipmentVo> findEquipments(String communityNo, String equipmentType) {
@@ -91,6 +91,11 @@ public class ManagerMachineServiceImpl implements ManagerMachineService {
 	@Override
 	public UseRoomVo findRoomById(String roomId) {
 		return residentMapper.findRoomById(roomId);
+	}
+
+	@Override
+	public List<UseNoticeVo> findTopNotice(String communityNo) {
+		return noticeMapper.findNoticeByCno(communityNo);
 	}
 
 }

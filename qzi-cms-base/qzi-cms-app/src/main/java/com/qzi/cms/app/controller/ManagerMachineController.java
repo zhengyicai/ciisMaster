@@ -194,4 +194,21 @@ public class ManagerMachineController {
 			}
 			return respBody;
 		}
+
+	@GetMapping({"/findTopNotice"})
+	public RespBody findTopNotice(String communityNo)
+	{
+		RespBody respBody = new RespBody();
+		try
+		{
+			respBody.add(RespCodeEnum.SUCCESS.getCode(), "查找最新公告数据成功", mgrMachineService.findTopNotice(communityNo));
+		}
+		catch (Exception ex)
+		{
+			respBody.add(RespCodeEnum.ERROR.getCode(), "查找最新公告数据失败");
+			LogUtils.error("查找最新公告数据失败", ex);
+		}
+		return respBody;
+	}
+
 }
