@@ -40,6 +40,10 @@ public interface UseRoomMapper extends BaseMapper<UseRoomPo>{
 	public UseRoomVo findRoom(@Param("buildingId") String buildingId, @Param("unitId") String unitId,  @Param("roomName") String roomName);
 
 
+
+	@Select("SELECT count(1) from use_room where unitId=#{unitId} and buildingId = #{buildingId}")
+	public long findRoomCount(@Param("buildingId") String buildingId, @Param("unitId") String unitId);
+
 	/**
 	 * @param buildingId
 	 * @param unitId

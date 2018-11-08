@@ -77,9 +77,10 @@ public class BuildingServiceImpl implements BuildingService {
 
 	@Override
 	public void updateState(UseBuildingVo buildingVo) {
-		UseBuildingPo buildingPo = buildMapper.selectByPrimaryKey(buildingVo.getId());
+		UseBuildingPo buildingPo = buildMapper.selectByPrimaryKey(buildingVo.getBuildingNo());
 		buildingPo.setState(buildingVo.getState());
 		buildMapper.updateByPrimaryKey(buildingPo);
+		useUnitMapper.update(buildingVo.getState(),buildingVo.getId());
 	}
 
 	@Override

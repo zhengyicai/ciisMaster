@@ -45,6 +45,10 @@ public interface RoomService {
 	 */
 	public long findCount(String buildingId, String unitId);
 
+
+
+	public long findBuildingCount(String buildingId, String unitId);
+
 	/**
 	 * 修改房间信息
 	 * @param roomVo 房间对象

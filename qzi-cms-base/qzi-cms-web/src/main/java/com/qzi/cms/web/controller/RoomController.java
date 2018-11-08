@@ -64,7 +64,7 @@ public class RoomController {
 			//查找数据并返回
 			respBody.add(RespCodeEnum.SUCCESS.getCode(), "获取房间信息成功",roomService.findBuilding(buildingId,unitId,paging));
 			//保存分页对象
-			paging.setTotalCount(roomService.findCount(buildingId,unitId));
+			paging.setTotalCount(roomService.findBuildingCount(buildingId,unitId));
 			respBody.setPage(paging);
 		} catch (Exception ex) {
 			respBody.add(RespCodeEnum.ERROR.getCode(), "获取房间信息异常");

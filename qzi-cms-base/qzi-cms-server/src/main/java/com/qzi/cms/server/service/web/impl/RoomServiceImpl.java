@@ -125,6 +125,11 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
+	public long findBuildingCount(String buildingId, String unitId) {
+		return roomMapper.findRoomCount(buildingId,unitId);
+	}
+
+	@Override
 	public void update(UseRoomVo roomVo) throws Exception {
 		UseRoomPo roomPo = YBBeanUtils.copyProperties(roomVo, UseRoomPo.class);
 		roomMapper.updateByPrimaryKey(roomPo);
